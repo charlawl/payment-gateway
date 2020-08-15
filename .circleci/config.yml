@@ -1,0 +1,16 @@
+ version: 2.1
+
+ orbs:
+  win: circleci/windows@2.2.0
+
+ jobs:
+   build:
+     machine:
+        image: ubuntu-1604:202004-01
+     working_directory: ~/payment-gateway  
+     steps:
+       - checkout
+       - run:
+          name: "Print Working Directory"
+          command: pwd
+       - run: docker build -f './PaymentGateway/Dockerfile' .
