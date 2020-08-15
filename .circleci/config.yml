@@ -1,19 +1,37 @@
- version: 2.1
+version: 2.1
 
- orbs:
+orbs:
   win: circleci/windows@2.2.0
 
- jobs:
-   build:
-     machine:
-        image: ubuntu-1604:202004-01
-     working_directory: ~/payment-gateway  
-     steps:
-       - checkout
-       - run:
-          name: Running Unit Tests
-          command: dotnet test './PaymetGateway.UnitTests'
-       - run: 
+jobs:
+  build:
+    machine:
+      image: ubuntu-1604:202004-01 
+    working_directory: ~/payment-gateway  
+    steps:
+      - checkout
+      - run: 
           name: Building Docker Image
           command: docker build -f './PaymentGateway/Dockerfile' .
-       
+  test:
+      machine:
+          image: ubuntu-1604:202004-01 
+      working_directory: ~/payment-gateway  
+      steps:
+        - checkout
+        - run: 
+            name: Install Dotnet
+            command: sudo apt-get install -y dotnet-runtime-3.1
+        - run:
+            name: Running Unit Tests
+            command: dotnet test './PaymetGateway.UnitTests/'
+
+workflows:
+  version: 2
+  Workflow:
+    jobs:
+      - test
+      - build:
+          requires:
+            - test
+
