@@ -10,10 +10,11 @@
      working_directory: ~/payment-gateway  
      steps:
        - checkout
-       - run: 
-          name: Building Docker Image
-          command: docker build -f './PaymentGateway/Dockerfile' .
        - run:
           name: Running Tests
           command: dotnet test
           working_directory: '**/*Tests.csproj' 
+       - run: 
+          name: Building Docker Image
+          command: docker build -f './PaymentGateway/Dockerfile' .
+       
