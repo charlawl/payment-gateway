@@ -11,9 +11,9 @@
      steps:
        - checkout
        - run:
-          name: Running Tests
+          name: Running Unit Tests
           command: dotnet test
-          working_directory: '**/*Tests.csproj' 
+          working_directory: dotnet test .\PaymetGateway.UnitTests\
        - run: 
           name: Building Docker Image
           command: docker build -f './PaymentGateway/Dockerfile' .
