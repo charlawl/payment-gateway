@@ -18,7 +18,7 @@ namespace PaymentGateway.Libs.Services
         {
             var json = JsonConvert.SerializeObject(paymentRequest);
 
-            var url = "http://localhost:8080/payment-initiation";
+            var url = "http://localhost:8080/payment-initiation"; //ToDo - add to config
             var content = new StringContent(json, Encoding.UTF8, "application/json");
             var response = await Client.PostAsync(url, content);
 
@@ -28,11 +28,6 @@ namespace PaymentGateway.Libs.Services
 
             return responseJson;
 
-        }
-
-        private HttpRequestMessage BuildRequestMessage()
-        {
-            return null;
         }
 
     }

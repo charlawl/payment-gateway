@@ -144,7 +144,6 @@ namespace PaymentGateway.UnitTests
             //Assert
             Assert.That(value.Status, Is.Not.EqualTo(Status.Declined));
 
-
         }
     }
 }
