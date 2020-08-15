@@ -10,7 +10,7 @@ namespace PaymentGateway.UnitTests
         }
 
         [Test]
-        public void Test1()
+        public void Test()
         {
             
         }
