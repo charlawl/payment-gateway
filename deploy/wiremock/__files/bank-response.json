@@ -1,9 +1,8 @@
 {
     "id": "payment_476c494ba433285e3468ddd3d12e6287",
-    "amount": 9.99,
+    "amount": 9.90,
     "currency": "USD",
-    "payment_method_type": "us_visa_card",
-    "payment_method_type_category": "card",
+    "payment_method_type": "Visa",
 
     "status": "SUCCESS"  
 }

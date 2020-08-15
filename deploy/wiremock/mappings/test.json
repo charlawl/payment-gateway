@@ -1,4 +1,5 @@
 // {
+//     "merchant_id" : "123"
 //     "amount": 9.99,
 //     "currency": "USD",
 //     "payment_method": {
