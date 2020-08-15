@@ -14,17 +14,19 @@ namespace PaymentGateway.Libs.Services
         //consider replacing with IHttpClient DI - free Polly extensions and fixes socket exceptions issues
         private static readonly HttpClient Client = new HttpClient();
 
-        public async Task<PaymentModel> InitiatePaymentWithCardDetails(MerchantPaymentRequest paymentRequest)
+        public async Task<BankResponse> InitiatePaymentWithCardDetails(MerchantPaymentRequest paymentRequest)
         {
             var json = JsonConvert.SerializeObject(paymentRequest);
 
-            var url = "http://localhost:8080/paymentRequest-initiation";
+            var url = "http://localhost:8080/payment-initiation";
             var content = new StringContent(json, Encoding.UTF8, "application/json");
             var response = await Client.PostAsync(url, content);
 
             var responseString = await response.Content.ReadAsStringAsync();
 
-            return JsonConvert.DeserializeObject<PaymentModel>(responseString);
+            var responseJson = JsonConvert.DeserializeObject<BankResponse>(responseString);
+
+            return responseJson;
 
         }
 
@@ -38,6 +40,6 @@ namespace PaymentGateway.Libs.Services
 
     public interface IInitiatePayment
     {
-        Task<PaymentModel> InitiatePaymentWithCardDetails(MerchantPaymentRequest paymentRequest);
+        Task<BankResponse> InitiatePaymentWithCardDetails(MerchantPaymentRequest paymentRequest);
     }
 }

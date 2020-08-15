@@ -2,7 +2,7 @@
     "id": "payment_476c494ba433285e3468ddd3d12e6287",
     "amount": 9.90,
     "currency": "USD",
-    "payment_method_type": "Visa",
+    "paymentMethod": "Visa",
 
-    "status": "SUCCESS"  
+    "status": "Accepted"  
 }

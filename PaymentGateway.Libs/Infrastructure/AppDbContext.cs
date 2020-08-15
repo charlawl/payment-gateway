@@ -13,6 +13,13 @@ namespace PaymentGateway.Libs.Infrastructure
 
         }
 
-        public DbSet<MerchantPaymentRequest> PaymentRequests { get; set; }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<MerchantPayment>().Property(b => b.Status).HasDefaultValue(Status.Accepted);
+        }
+
+        public DbSet<MerchantPayment> Payments { get; set; }
+        public DbSet<PaymentMethod> PaymentMethods { get; set; }
+
     }
 }

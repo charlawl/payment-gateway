@@ -12,16 +12,15 @@ namespace PaymentGateway.Libs.Services
             _initiatePayment = initiatePayment;
         }
 
-        public async Task<PaymentModel> SubmitPaymentToBank(MerchantPaymentRequest paymentRequest)
+        public async Task<BankResponse> SubmitPaymentToBank(MerchantPaymentRequest paymentRequest)
         {
             return await _initiatePayment.InitiatePaymentWithCardDetails(paymentRequest);
         }
-
 
     }
 
     public interface IPaymentService
     {
-        Task<PaymentModel> SubmitPaymentToBank(MerchantPaymentRequest paymentRequest);
+        Task<BankResponse> SubmitPaymentToBank(MerchantPaymentRequest paymentRequest);
     }
 }

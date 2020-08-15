@@ -1,15 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using PaymentGateway.Libs.Models;
 
 namespace PaymentGateway.Libs.Infrastructure
 {
     public interface IPaymentRepository
     {
-        Task Add(MerchantPaymentRequest paymentRequest);
-        Task<MerchantPaymentRequest> GetById(Guid id);
+        Task Add(MerchantPayment paymentRequest);
+        Task<MerchantPayment> GetById(Guid id);
     }
 
     public class PaymentRepository : IPaymentRepository
@@ -21,15 +23,17 @@ namespace PaymentGateway.Libs.Infrastructure
             _dbContext = dbContext;
         }
 
-        public Task Add(MerchantPaymentRequest paymentRequest)
+        public Task Add(MerchantPayment payment)
         {
-            _dbContext.PaymentRequests.Add(paymentRequest);
+            _dbContext.Payments.Add(payment);
             return _dbContext.SaveChangesAsync();
         }
 
-        public async Task<MerchantPaymentRequest> GetById(Guid id)
+        public async Task<MerchantPayment> GetById(Guid id)
         {
-            return _dbContext.PaymentRequests.Find(id);
+            return _dbContext.Payments
+                    .Include(request => request.PaymentMethod)
+                    .Single(r => r.Id == id);
         }
     }
 }

@@ -10,7 +10,10 @@
      working_directory: ~/payment-gateway  
      steps:
        - checkout
+       - run: 
+          name: Building Docker Image
+          command: docker build -f './PaymentGateway/Dockerfile' .
        - run:
-          name: "Print Working Directory"
-          command: pwd
-       - run: docker build -f './PaymentGateway/Dockerfile' .
+          name: Running Tests
+          command: dotnet test
+          working_directory: '**/*Tests.csproj' 

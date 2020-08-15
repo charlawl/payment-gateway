@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using PaymentGateway.Libs;
 using PaymentGateway.Libs.Infrastructure;
 using PaymentGateway.Libs.Models;
 using PaymentGateway.Libs.Services;
@@ -12,38 +12,53 @@ namespace PaymentGateway.Api.Controllers
     {
         private readonly IPaymentService _paymentService;
         private readonly IPaymentRepository _paymentRepository;
-        public PaymentController(IPaymentService paymentService, IPaymentRepository paymentRepository)
+        private readonly IMapper _mapper;
+        //ToDo - add seriLog for simple application logging
+        
+
+        public PaymentController(IPaymentService paymentService, IPaymentRepository paymentRepository, IMapper mapper)
         {
             _paymentService = paymentService;
             _paymentRepository = paymentRepository;
+            _mapper = mapper;
         }
 
         [HttpPost]
         public async Task<IActionResult> SubmitPayment([FromBody] MerchantPaymentRequest paymentRequest)
         {
-            //Merchant request -> DB store request 
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+                //log - bad request 
+            }
 
-            /*
-            await _paymentService.SubmitPaymentToBank(paymentRequest);
-            */
+            var payment = _mapper.Map<MerchantPayment>(paymentRequest);
 
-            await _paymentRepository.Add(paymentRequest);
+            await _paymentRepository.Add(payment);
+            //log payment added to db with {id}
 
-            return CreatedAtAction(nameof(GetPayment), new {id = paymentRequest.Id}, paymentRequest);
+             await _paymentService.SubmitPaymentToBank(paymentRequest);
+            //log payment submitted to bank with {id}
+
+            return CreatedAtAction(nameof(GetPayment), new {id = payment.Id}, _mapper.Map<MerchantPaymentResponse>(payment));
         }
         
         [HttpGet]
-        public IActionResult GetPayment([FromRoute] Guid id)
+        public async Task<IActionResult> GetPayment([FromRoute] Guid id)
         {
 
-            var paymentItem = _paymentRepository.GetById(id);
+            var payment = await _paymentRepository.GetById(id);
+            //log payment found with {id}
 
-            if (paymentItem == null)
+            var paymentResponse = _mapper.Map<MerchantPaymentResponse>(payment);
+
+            if (paymentResponse == null)
             {
-                return BadRequest();
+                return NotFound();
+                //log payment not found
             }
 
-            return Ok(paymentItem);
+            return Ok(paymentResponse);
 
         }
         
