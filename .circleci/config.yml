@@ -5,7 +5,8 @@
 
  jobs:
    build:
-     executor: win/default 
+     machine:
+        image: ubuntu-1604:202004-01
      working_directory: ~/payment-gateway  
      steps:
        - checkout
