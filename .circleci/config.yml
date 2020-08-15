@@ -5,10 +5,11 @@
 
  jobs:
    build:
-     executor: win/default     
+     executor: win/default 
+     working_directory: ~/PaymentGateway   
      steps:
        - checkout
        - run:
           name: "Print Working Directory"
           command: pwd
-       - run: dotnet build "./PaymentGateway.Api.csproj" -c Release -o /app/build
+       - run: dotnet build "PaymentGateway.Api.csproj" -c Release -o /app/build
