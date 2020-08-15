@@ -8,5 +8,7 @@
      executor: win/default     
     
      steps:
-       - checkout
-       - run: dotnet build "./PaymentGateway.Api.csproj" -c Release -o /app/build
+      - checkout
+      - run:
+          name: "Build Application"
+          command: dotnet.exe build --configuration Release
