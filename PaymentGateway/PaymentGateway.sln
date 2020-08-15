@@ -3,11 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29806.167
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PaymentGateway", "PaymentGateway.csproj", "{6BD609F0-3AA4-42B1-A59E-ACBA7B4ADEEA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PaymentGateway.Api", "PaymentGateway.Api.csproj", "{6BD609F0-3AA4-42B1-A59E-ACBA7B4ADEEA}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PaymetGateway.UnitTests", "..\PaymetGateway.UnitTests\PaymetGateway.UnitTests.csproj", "{97DB528A-9084-42A8-AC09-FF4135B314C1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PaymentGateway.UnitTests", "..\PaymetGateway.UnitTests\PaymentGateway.UnitTests.csproj", "{97DB528A-9084-42A8-AC09-FF4135B314C1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PaymentGateway.Specs", "..\PaymentGateway.Specs\PaymentGateway.Specs.csproj", "{3841ABF9-5AA0-4F06-9F58-9CD515D50515}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{F7844730-5243-4306-AFE3-FE791B314A2F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PaymentGateway.Libs", "..\PaymentGateway.Libs\PaymentGateway.Libs.csproj", "{D1E8C33D-C790-43C9-A568-ECAF1280DC71}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,9 +31,17 @@ Global
 		{3841ABF9-5AA0-4F06-9F58-9CD515D50515}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3841ABF9-5AA0-4F06-9F58-9CD515D50515}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3841ABF9-5AA0-4F06-9F58-9CD515D50515}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D1E8C33D-C790-43C9-A568-ECAF1280DC71}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D1E8C33D-C790-43C9-A568-ECAF1280DC71}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D1E8C33D-C790-43C9-A568-ECAF1280DC71}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D1E8C33D-C790-43C9-A568-ECAF1280DC71}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{97DB528A-9084-42A8-AC09-FF4135B314C1} = {F7844730-5243-4306-AFE3-FE791B314A2F}
+		{3841ABF9-5AA0-4F06-9F58-9CD515D50515} = {F7844730-5243-4306-AFE3-FE791B314A2F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2D17F099-5A3E-444F-AC6C-D0D6B948FB91}
