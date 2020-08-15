@@ -6,17 +6,16 @@ EXPOSE 80
 EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster AS build
-WORKDIR /src
-COPY ["PaymentGateway.csproj", ""]
-RUN dotnet restore "./PaymentGateway.Api.csproj"
-COPY . .
-WORKDIR "/src/."
-RUN dotnet build "PaymentGateway.Api.csproj" -c Release -o /app/build
+COPY . ./
+RUN dotnet build "PaymentGateway/PaymentGateway.Api.csproj" -c Release -o /app/build
 
-FROM build AS publish
-RUN dotnet publish "PaymentGateway.Api.csproj" -c Release -o /app/publish
+FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster AS publish
+COPY . ./
+RUN dotnet publish "PaymentGateway/PaymentGateway.Api.csproj" -c Release -o /app/publish
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "PaymentGateway.dll"]
+ENTRYPOINT ["dotnet", "PaymentGateway.Api.dll"] 
+
+

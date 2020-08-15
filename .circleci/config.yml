@@ -6,10 +6,10 @@
  jobs:
    build:
      executor: win/default 
-     working_directory: ~/PaymentGateway   
+     working_directory: ~/payment-gateway  
      steps:
        - checkout
        - run:
           name: "Print Working Directory"
           command: pwd
-       - run: dotnet build "PaymentGateway.Api.csproj" -c Release -o /app/build
+       - run: docker build -f .\PaymentGateway\Dockerfile .
