@@ -1,6 +1,6 @@
 using NUnit.Framework;
 
-namespace PaymetGateway.UnitTests
+namespace PaymentGateway.UnitTests
 {
     public class Tests
     {
