@@ -6,9 +6,9 @@
  jobs:
    build:
      executor: win/default     
-    
      steps:
-      - checkout
-      - run:
-          name: "Build Application"
-          command: dotnet.exe build --configuration Release
+       - checkout
+       - run:
+          name: "Print Working Directory"
+          command: pwd
+       - run: dotnet build "./PaymentGateway.Api.csproj" -c Release -o /app/build
