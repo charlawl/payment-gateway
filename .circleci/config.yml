@@ -6,7 +6,7 @@ orbs:
 jobs:
   build:
     machine:
-      image: ubuntu-1604:202004-01 
+      image: dotnet/core/sdk:3.1-buster 
     working_directory: ~/payment-gateway  
     steps:
       - checkout
@@ -15,7 +15,7 @@ jobs:
           command: docker build -f './PaymentGateway/Dockerfile' .
   test:
       machine:
-          image: ubuntu-1604:202004-01 
+          image: dotnet/core/sdk:3.1-buster 
       working_directory: ~/payment-gateway  
       steps:
         - checkout
