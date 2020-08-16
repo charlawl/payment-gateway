@@ -21,7 +21,7 @@ jobs:
         - checkout
         - run: 
             name: Install Dotnet
-            command: sudo apt-get install -y dotnet-sdk-3.1
+            command: sudo snap install dotnet-sdk --classic
         - run:
             name: Running Unit Tests
             command: dotnet test './PaymetGateway.UnitTests/'
