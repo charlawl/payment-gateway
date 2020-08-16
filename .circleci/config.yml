@@ -4,11 +4,12 @@ orbs:
   win: circleci/windows@2.2.0
 
 jobs:
-  build:
-    machine:
-      image: dotnet/core/sdk:3.1-buster 
+  build: 
+    machine: true
     working_directory: ~/payment-gateway  
     steps:
+      - setup_remote_docker:
+          docker_layer_caching: false
       - checkout
       - run: 
           name: Building Docker Image
