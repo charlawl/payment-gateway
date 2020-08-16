@@ -4,25 +4,24 @@ orbs:
   win: circleci/windows@2.2.0
 
 jobs:
-  build: 
-    machine: true
+  build:
+    machine:
+      image: ubuntu-1604:202004-01 
     working_directory: ~/payment-gateway  
     steps:
-      - setup_remote_docker:
-          docker_layer_caching: false
       - checkout
       - run: 
           name: Building Docker Image
           command: docker build -f './PaymentGateway/Dockerfile' .
   test:
       machine:
-          image: dotnet/core/sdk:3.1-buster 
+          image: ubuntu-1604:202004-01 
       working_directory: ~/payment-gateway  
       steps:
         - checkout
         - run: 
             name: Install Dotnet
-            command: sudo apt-get install -y dotnet-runtime-3.1
+            command: sudo apt-get install -y dotnet-sdk-3.1
         - run:
             name: Running Unit Tests
             command: dotnet test './PaymetGateway.UnitTests/'
