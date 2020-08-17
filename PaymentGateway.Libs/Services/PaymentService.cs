@@ -16,7 +16,6 @@ namespace PaymentGateway.Libs.Services
         {
             return await _initiatePayment.InitiatePaymentWithCardDetails(paymentRequest);
         }
-
     }
 
     public interface IPaymentService

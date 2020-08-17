@@ -9,9 +9,10 @@ using PaymentGateway.Libs.Models;
 namespace PaymentGateway.Libs.Infrastructure
 {
     public interface IPaymentRepository
-    {
-        Task Add(MerchantPayment paymentRequest);
+    { 
+        Task Add(MerchantPayment payment);
         Task<MerchantPayment> GetById(Guid id);
+        Task Update(Guid id, MerchantPayment payment);
     }
 
     public class PaymentRepository : IPaymentRepository
@@ -34,6 +35,15 @@ namespace PaymentGateway.Libs.Infrastructure
             return _dbContext.Payments
                     .Include(request => request.PaymentMethod)
                     .Single(r => r.Id == id);
+        }
+
+        public Task Update(Guid id, MerchantPayment payment)
+        {
+            var paymentItem = _dbContext.Payments.Find(id);
+
+            paymentItem.Status = payment.Status;
+
+            return _dbContext.SaveChangesAsync();
         }
     }
 }

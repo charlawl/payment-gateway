@@ -7,8 +7,14 @@ namespace PaymentGateway.Api.Mappers
     {
         public MerchantPaymentProfile()
         {
-            CreateMap<MerchantPayment, MerchantPaymentRequest>().ReverseMap();
-            CreateMap<MerchantPayment, MerchantPaymentResponse>().ReverseMap();
+            CreateMap<MerchantPaymentRequest, MerchantPayment>();
+
+            CreateMap<MerchantPayment, MerchantPaymentResponse>()
+                .IncludeMembers(s => s.PaymentMethod)
+                .ForMember(x => x.Number, 
+                    opt => opt.ConvertUsing(new CreditCardNumberFormatter(), src => src.PaymentMethod.Number));
+
+            CreateMap<PaymentMethod, MerchantPaymentResponse>();
         }
     }
 }

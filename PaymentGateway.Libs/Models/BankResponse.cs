@@ -13,6 +13,7 @@ namespace PaymentGateway.Libs.Models
         public string Currency { get; set; }
         public string PaymentMethod { get; set; }
         public Status Status { get; set; }
+        public DateTime TransactionDate => DateTime.UtcNow;
 
     }
 }

@@ -24,13 +24,13 @@ namespace PaymentGateway.UnitTests
         }
 
         [Test]
-        public void SaveRequestToDbReturnCreatedActionResult()
+        public void ReturnCreatedActionResult()
         {
             //Arrange
             var paymentRepo = new Mock<IPaymentRepository>();
             var profile = new MerchantPaymentProfile();
             var mapperConfig = new MapperConfiguration(x=> x.AddProfile(profile));
-            var paymentService = new Mock<IPaymentService>();
+            var paymentPublisher = new Mock<IPaymentPublisher>();
 
             var mapper = new Mapper(mapperConfig);
 
@@ -51,7 +51,7 @@ namespace PaymentGateway.UnitTests
             };
 
 
-            var controller = new PaymentController(paymentService.Object, paymentRepo.Object, mapper);
+            var controller = new PaymentController(paymentRepo.Object, mapper, paymentPublisher.Object);
 
             //Act
             var result = controller.SubmitPayment(paymentRequest);
@@ -67,7 +67,7 @@ namespace PaymentGateway.UnitTests
             var paymentRepo = new Mock<IPaymentRepository>();
             var profile = new MerchantPaymentProfile();
             var mapperConfig = new MapperConfiguration(x => x.AddProfile(profile));
-            var paymentService = new Mock<IPaymentService>();
+            var paymentPublisher = new Mock<IPaymentPublisher>();
 
             var mapper = new Mapper(mapperConfig);
 
@@ -88,22 +88,16 @@ namespace PaymentGateway.UnitTests
             };
 
 
-            var controller = new PaymentController(paymentService.Object, paymentRepo.Object, mapper);
+            var controller = new PaymentController(paymentRepo.Object, mapper, paymentPublisher.Object);
 
             //Act
             var result = controller.SubmitPayment(paymentRequest);
             var value = ((CreatedAtActionResult)result.Result).Value as MerchantPaymentResponse;  //https://github.com/dotnet/AspNetCore.Docs/issues/12533 - ew.
 
+            //Assert
             Assert.That(value.Amount, Is.EqualTo(9.99));
             Assert.That(value.Currency, Is.EqualTo("USD"));
             Assert.That(value.MerchantId, Is.EqualTo("1"));
-            Assert.That(value.PaymentMethod.Cvv, Is.EqualTo("123"));
-            Assert.That(value.PaymentMethod.ExpirationMonth, Is.EqualTo("05"));
-            Assert.That(value.PaymentMethod.ExpirationYear, Is.EqualTo("2021"));
-            Assert.That(value.PaymentMethod.PaymentMethodId, Is.TypeOf<Guid>());
-            Assert.That(value.PaymentMethod.Type, Is.EqualTo("Visa"));
-            Assert.That(value.Status, Is.EqualTo(Status.Submitted));
-            Assert.That(value.Id, Is.TypeOf<Guid>());
 
         }
 
@@ -114,7 +108,7 @@ namespace PaymentGateway.UnitTests
             var paymentRepo = new Mock<IPaymentRepository>();
             var profile = new MerchantPaymentProfile();
             var mapperConfig = new MapperConfiguration(x => x.AddProfile(profile));
-            var paymentService = new Mock<IPaymentService>();
+            var paymentPublisher = new Mock<IPaymentPublisher>();
 
             var mapper = new Mapper(mapperConfig);
 
@@ -135,13 +129,14 @@ namespace PaymentGateway.UnitTests
             };
 
 
-            var controller = new PaymentController(paymentService.Object, paymentRepo.Object, mapper);
+            var controller = new PaymentController(paymentRepo.Object, mapper, paymentPublisher.Object);
 
             //Act
             var result = controller.SubmitPayment(paymentRequest);
             var value = ((CreatedAtActionResult)result.Result).Value as MerchantPaymentResponse;
 
             //Assert
+            Assert.That(value.Status, Is.EqualTo(Status.Submitted));
             Assert.That(value.Status, Is.Not.EqualTo(Status.Declined));
 
         }

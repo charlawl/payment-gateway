@@ -32,9 +32,14 @@ namespace PaymentGateway.Libs.Models
         public Guid Id { get; set; }
         public double Amount { get; set; }
         public string Currency { get; set; }
-        public PaymentMethod PaymentMethod { get; set; }
+        public string Type { get; set; }
+        public string Number { get; set; }
+        public string ExpirationMonth { get; set; }
+        public string ExpirationYear { get; set; }
+        public string Cvv { get; set; }
         public string MerchantId { get; set; }
         public Status Status { get; set; }
+
     }
 
     public class PaymentMethod

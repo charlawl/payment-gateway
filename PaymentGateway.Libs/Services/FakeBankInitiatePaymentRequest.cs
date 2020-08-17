@@ -9,9 +9,9 @@ using PaymentGateway.Libs.Models;
 
 namespace PaymentGateway.Libs.Services
 {
-    public class InitiatePayment : IInitiatePayment
+    public class FakeBankInitiatePaymentRequest : IInitiatePayment
     {
-        //consider replacing with IHttpClient DI - free Polly extensions and fixes socket exceptions issues
+        //ToDo - consider replacing with IHttpClient DI - free Polly extensions and fixes socket exceptions issues
         private static readonly HttpClient Client = new HttpClient();
 
         public async Task<BankResponse> InitiatePaymentWithCardDetails(MerchantPaymentRequest paymentRequest)

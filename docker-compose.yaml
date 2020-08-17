@@ -14,5 +14,11 @@ services:
     command:
     - -verbose
     - -global-response-templating
-
+  rabbitmq:
+    image: 'bitnami/rabbitmq:latest'
+    ports:
+      # The standard AMQP protocol port
+      - '5672:5672'
+      # HTTP management UI
+      - '8081:15672'
  

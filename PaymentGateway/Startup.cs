@@ -32,8 +32,10 @@ namespace PaymentGateway
             services.AddDbContext<AppDbContext>(opt => opt.UseInMemoryDatabase("Payments"));
             services.AddControllers();
             services.AddSingleton<IPaymentService, PaymentService>();
-            services.AddSingleton<IInitiatePayment, InitiatePayment>();
+            services.AddSingleton<IInitiatePayment, FakeBankInitiatePaymentRequest>();
             services.AddScoped<IPaymentRepository, PaymentRepository>();
+            services.AddHostedService<PaymentConsumer>();
+            services.AddSingleton<IPaymentPublisher, PaymentPublisher>();
             services.AddControllersWithViews()
                 .AddNewtonsoftJson(options =>
                     options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
