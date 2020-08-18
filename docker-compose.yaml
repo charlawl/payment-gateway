@@ -1,9 +1,17 @@
-version: '3'
+version: '2.1'
 services:
   api:
-    build: "PaymentGateway/."
+    image: "payment-gateway-api:latest"
     ports:
-      - "44375:80"
+      - 8085:80
+      - 443
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - Kestrel__Certificates__Default__Path=/app/Infrastructure/Certificate/certificate.pfx 
+      - Kestrel__Certificates__Default__Password=password 
+      - ASPNETCORE_URLS=https://+:443;http://+:80 
+    volumes:
+      - C:\temp\:/app/Infrastructure/Certificate
   wiremock:
     image: rodolpheche/wiremock
     container_name: wiremock-standalone
@@ -14,11 +22,22 @@ services:
     command:
     - -verbose
     - -global-response-templating
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
   rabbitmq:
+    hostname: rabbit
     image: 'bitnami/rabbitmq:latest'
     ports:
       # The standard AMQP protocol port
       - '5672:5672'
       # HTTP management UI
-      - '8081:15672'
+      - '15672:15672'
+    healthcheck:
+        test: ["CMD", "curl", "-f", "http://localhost:15672"]
+        interval: 30s
+        timeout: 10s
+        retries: 5
  
