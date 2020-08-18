@@ -14,7 +14,7 @@ namespace PaymentGateway.Libs.Services
         {
             var factory = new ConnectionFactory()
             {
-                HostName = "localhost",
+                HostName = "rabbitmq",
                 UserName = "user",
                 Password = "bitnami"
             };

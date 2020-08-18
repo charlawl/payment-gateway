@@ -1,0 +1,377 @@
+{
+	"info": {
+		"_postman_id": "573ce2d7-5294-4172-8e04-681574f5ed57",
+		"name": "PaymentGateway",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Post valid card details",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "36c27c4d-9307-4479-b419-a71a6698dea6",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);\r",
+							"pm.variables.set(\"payment_id\", pm.response.json().id);\r",
+							"\r",
+							"\r",
+							"pm.test(\"Status is 201\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Payment status is Submitted\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.status).to.eql(\"Submitted\");\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"Amount\": 9.99,\r\n    \"Currency\": \"USD\",\r\n    \"PaymentMethod\": {\r\n        \"Type\": \"visa\",\r\n        \"Number\": \"4111111111111111\",\r\n        \"ExpirationMonth\": \"10\",\r\n        \"ExpirationYear\": \"20\",\r\n        \"Cvv\": \"123\"\r\n    \r\n    },\r\n    \"MerchantId\": \"1\"\r\n }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:4431/payment/submitpayment",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "4431",
+					"path": [
+						"payment",
+						"submitpayment"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get submitted payment",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "ebfa32c6-ceb8-4cf7-8315-e308207c434c",
+						"exec": [
+							"pm.test(\"Status is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Payment status is Submitted\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.status).to.eql(\"Submitted\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "https://localhost:4431/payment/getpayment/{{payment_id}}",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "4431",
+					"path": [
+						"payment",
+						"getpayment",
+						"{{payment_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get accepted payment",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "d360e497-0974-4d09-b89f-ddc55357396d",
+						"exec": [
+							"pm.test(\"Status is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"var expectedStatus = \"Accepted\";\r",
+							"var maxNumberOfTries = 3;\r",
+							"var sleepBetweenTries = 5000;\r",
+							"\r",
+							"if (!pm.environment.get(\"collection_tries\")) {\r",
+							"    pm.environment.set(\"collection_tries\", 1);\r",
+							"}\r",
+							"\r",
+							"if ((pm.response.json().status != expectedStatus) && (pm.environment.get(\"collection_tries\") < maxNumberOfTries)) {\r",
+							"pm.variables.get(\"variable_key\");\r",
+							"     var tries = parseInt(pm.environment.get(\"collection_tries\"), 10);\r",
+							"     pm.environment.set(\"collection_tries\", tries + 1);\r",
+							"     setTimeout(function() {}, sleepBetweenTries);\r",
+							"     postman.setNextRequest(request.name);\r",
+							" } else {\r",
+							"     pm.environment.unset(\"collection_tries\");\r",
+							"\r",
+							"    pm.test(\"Payment status is Accepted\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.status).to.eql(\"Accepted\");\r",
+							"});\r",
+							"\r",
+							"     \r",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "https://localhost:4431/payment/getpayment/{{payment_id}}",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "4431",
+					"path": [
+						"payment",
+						"getpayment",
+						"{{payment_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Post invalid card details",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "23ec2337-e70f-47e0-9810-a93931a829e7",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);\r",
+							"pm.variables.set(\"payment_id\", pm.response.json().id);\r",
+							"\r",
+							"\r",
+							"pm.test(\"Status is 201\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Payment status is Submitted\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.status).to.eql(\"Submitted\");\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"Amount\": 9.99,\r\n    \"Currency\": \"USD\",\r\n    \"PaymentMethod\": {\r\n        \"Type\": \"Amex\",\r\n        \"Number\": \"4111111111111111\",\r\n        \"ExpirationMonth\": \"10\",\r\n        \"ExpirationYear\": \"20\",\r\n        \"Cvv\": \"123\"\r\n    \r\n    },\r\n    \"MerchantId\": \"1\"\r\n }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:4431/payment/submitpayment",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "4431",
+					"path": [
+						"payment",
+						"submitpayment"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get submitted payment (invalid card)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "e94d1d76-8eed-4e12-8338-05c5f75bdfd5",
+						"exec": [
+							"pm.test(\"Status is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Payment status is Submitted\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.status).to.eql(\"Submitted\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "https://localhost:4431/payment/getpayment/{{payment_id}}",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "4431",
+					"path": [
+						"payment",
+						"getpayment",
+						"{{payment_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get declined payment",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "19d57e8a-d36c-4370-af28-a27978d821f4",
+						"exec": [
+							"pm.test(\"Status is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"var expectedStatus = \"Declined\";\r",
+							"var maxNumberOfTries = 3;\r",
+							"var sleepBetweenTries = 5000;\r",
+							"\r",
+							"if (!pm.environment.get(\"collection_tries\")) {\r",
+							"    pm.environment.set(\"collection_tries\", 1);\r",
+							"}\r",
+							"\r",
+							"if ((pm.response.json().status != expectedStatus) && (pm.environment.get(\"collection_tries\") < maxNumberOfTries)) {\r",
+							"pm.variables.get(\"variable_key\");\r",
+							"     var tries = parseInt(pm.environment.get(\"collection_tries\"), 10);\r",
+							"     pm.environment.set(\"collection_tries\", tries + 1);\r",
+							"     setTimeout(function() {}, sleepBetweenTries);\r",
+							"     postman.setNextRequest(request.name);\r",
+							" } else {\r",
+							"     pm.environment.unset(\"collection_tries\");\r",
+							"\r",
+							"    pm.test(\"Payment status is Accepted\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.status).to.eql(expectedStatus);\r",
+							"});\r",
+							"\r",
+							"     \r",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "https://localhost:4431/payment/getpayment/{{payment_id}}",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "4431",
+					"path": [
+						"payment",
+						"getpayment",
+						"{{payment_id}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "892bd11d-1d73-41c0-b9d2-96548f20f753",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "48724cf3-84f1-405e-be3d-d620820977ff",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "ab64c86e-065c-40f1-8947-ad86d6059671",
+			"key": "payment_id",
+			"value": ""
+		}
+	],
+	"protocolProfileBehavior": {}
+}

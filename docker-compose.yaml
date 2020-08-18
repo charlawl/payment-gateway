@@ -1,10 +1,16 @@
-version: '2.1'
+version: '3'
 services:
   api:
-    image: "payment-gateway-api:latest"
+    restart: on-failure
+    build: 
+      context: .
+      dockerfile: 'PaymentGateway/Dockerfile'
+    depends_on: 
+      - rabbitmq
+      - fakebank
     ports:
-      - 8085:80
-      - 443
+      - "8085:80"
+      - "4431:443"
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - Kestrel__Certificates__Default__Path=/app/Infrastructure/Certificate/certificate.pfx 
@@ -12,32 +18,22 @@ services:
       - ASPNETCORE_URLS=https://+:443;http://+:80 
     volumes:
       - C:\temp\:/app/Infrastructure/Certificate
-  wiremock:
+  fakebank:
     image: rodolpheche/wiremock
     container_name: wiremock-standalone
-    ports: 
-      - "8080:8080"
+    expose: 
+      - 8080
     volumes:
     - "./deploy/wiremock:/home/wiremock"
     command:
     - -verbose
     - -global-response-templating
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080"]
-      interval: 30s
-      timeout: 10s
-      retries: 5
   rabbitmq:
-    hostname: rabbit
+    hostname: rabbitmq
     image: 'bitnami/rabbitmq:latest'
     ports:
-      # The standard AMQP protocol port
-      - '5672:5672'
       # HTTP management UI
       - '15672:15672'
-    healthcheck:
-        test: ["CMD", "curl", "-f", "http://localhost:15672"]
-        interval: 30s
-        timeout: 10s
-        retries: 5
+    expose:
+      - 5672
  
