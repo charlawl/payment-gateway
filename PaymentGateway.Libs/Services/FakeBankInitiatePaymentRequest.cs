@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Net.Http;
+﻿using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
@@ -14,9 +11,9 @@ namespace PaymentGateway.Libs.Services
         //ToDo - consider replacing with IHttpClient DI - free Polly extensions and fixes socket exceptions issues
         private static readonly HttpClient Client = new HttpClient();
 
-        public async Task<BankResponse> InitiatePaymentWithCardDetails(MerchantPaymentRequest paymentRequest)
+        public async Task<BankResponse> InitiatePaymentWithCardDetails(MerchantPayment payment)
         {
-            var json = JsonConvert.SerializeObject(paymentRequest);
+            var json = JsonConvert.SerializeObject(payment);
 
             var url = "http://localhost:8080/payment-initiation"; //ToDo - add to config
             var content = new StringContent(json, Encoding.UTF8, "application/json");
@@ -35,6 +32,6 @@ namespace PaymentGateway.Libs.Services
 
     public interface IInitiatePayment
     {
-        Task<BankResponse> InitiatePaymentWithCardDetails(MerchantPaymentRequest paymentRequest);
+        Task<BankResponse> InitiatePaymentWithCardDetails(MerchantPayment payment);
     }
 }

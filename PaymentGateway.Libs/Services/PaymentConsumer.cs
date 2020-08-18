@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json;
@@ -19,11 +18,13 @@ namespace PaymentGateway.Libs.Services
         private readonly IConnection _connection;
         private readonly IPaymentService _paymentService;
         private readonly IServiceScopeFactory _serviceScopeFactory;
+        private readonly IMapper _mapper;
 
-        public PaymentConsumer(IServiceScopeFactory serviceScopeFactory, IPaymentService paymentService)
+        public PaymentConsumer(IServiceScopeFactory serviceScopeFactory, IPaymentService paymentService, IMapper mapper)
         {
             _serviceScopeFactory = serviceScopeFactory;
             _paymentService = paymentService;
+            _mapper = mapper;
 
 
             var factory = new ConnectionFactory()
@@ -44,16 +45,18 @@ namespace PaymentGateway.Libs.Services
             _channel.QueueDeclare("payment_submitted", false, false, false, null);
 
             var consumer = new EventingBasicConsumer(_channel);
-            consumer.Received += (model, ea) =>
+            consumer.Received += async (model, ea) =>
             {
                 var body = ea.Body.ToArray();
                 var message = Encoding.UTF8.GetString(body);
                 var payment = JsonConvert.DeserializeObject<MerchantPayment>(message);
-
+                var bankResponse = await _paymentService.SubmitPaymentToBank(payment);
+                payment.Status = bankResponse.Status;
+                
                 using (var scope = _serviceScopeFactory.CreateScope())
                 {
                     var paymentRepository = scope.ServiceProvider.GetRequiredService<IPaymentRepository>();
-                    paymentRepository.Update(payment.Id, payment);
+                    await paymentRepository.Update(payment.Id, payment);
 
                 }
             };

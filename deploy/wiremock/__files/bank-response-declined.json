@@ -1,0 +1,8 @@
+{
+    "Id": "{{jsonPath request.body '$.Id'}}",
+    "amount": "{{jsonPath request.body '$.Amount'}}",
+    "currency": "{{jsonPath request.body '$.Currency'}}",
+    "paymentMethod": "{{jsonPath request.body '$.PaymentMethod.Type'}}",
+
+    "status": 2 
+}

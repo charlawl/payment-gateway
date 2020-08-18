@@ -1,10 +1,31 @@
 {
-    "request": {
-      "method": "POST",
-      "url": "/payment-initiation"
+  "mappings": [
+    {
+      "request": {
+        "method": "POST",
+        "url": "/payment-initiation"
+      },
+      "response": {
+        "status": 200,
+        "bodyFileName": "bank-response-accepted.json",
+        "fixedDelayMilliseconds": 1000
+      }
     },
-    "response": {
-      "status": 200,
-      "bodyFileName": "bank-response.json"
+    {
+      "request": {
+        "method": "POST",
+        "url": "/payment-initiation",
+        "bodyPatterns": [
+          {
+            "matchesJsonPath": "$.PaymentMethod[?(@.Type == 'Amex')]"
+          }
+        ]
+      },
+      "response": {
+        "status": 400,
+        "bodyFileName": "bank-response-declined.json",
+        "fixedDelayMilliseconds": 1000
+      }
     }
-  }
+  ]
+}

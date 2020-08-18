@@ -1,8 +1,8 @@
 {
-    "Id": "payment_476c494ba433285e3468ddd3d12e6287",
+    "Id": "{{jsonPath request.body '$.Id'}}",
     "amount": "{{jsonPath request.body '$.Amount'}}",
     "currency": "{{jsonPath request.body '$.Currency'}}",
     "paymentMethod": "{{jsonPath request.body '$.PaymentMethod.Type'}}",
 
-    "status": "Accepted"  
+    "status": 1  
 }

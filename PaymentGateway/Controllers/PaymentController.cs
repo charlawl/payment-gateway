@@ -46,7 +46,7 @@ namespace PaymentGateway.Api.Controllers
         public async Task<IActionResult> GetPayment([FromRoute] Guid id)
         {
             var payment = await _paymentRepository.GetById(id);
-            //log payment found with {id}
+            
 
             var paymentResponse = _mapper.Map<MerchantPaymentResponse>(payment);
 

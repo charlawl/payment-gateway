@@ -1,17 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace PaymentGateway.Libs.Models
 {
     
     public class BankResponse
     {
-        public string Id { get; set; }
-        public decimal Amount { get; set; }
+        public Guid Id { get; set; }
+        public double Amount { get; set; }
         public string Currency { get; set; }
         public string PaymentMethod { get; set; }
+        [JsonConverter(typeof(StringEnumConverter))]
         public Status Status { get; set; }
         public DateTime TransactionDate => DateTime.UtcNow;
 

@@ -1,5 +1,4 @@
 using System;
-using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
@@ -139,6 +138,12 @@ namespace PaymentGateway.UnitTests
             Assert.That(value.Status, Is.EqualTo(Status.Submitted));
             Assert.That(value.Status, Is.Not.EqualTo(Status.Declined));
 
+        }
+
+        [Test]
+        public void ValidatePaymentDetails()
+        {
+            //Todo - add tests around validation of card details
         }
     }
 }

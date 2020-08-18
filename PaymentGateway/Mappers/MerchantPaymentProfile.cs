@@ -15,6 +15,9 @@ namespace PaymentGateway.Api.Mappers
                     opt => opt.ConvertUsing(new CreditCardNumberFormatter(), src => src.PaymentMethod.Number));
 
             CreateMap<PaymentMethod, MerchantPaymentResponse>();
+
+            CreateMap<BankResponse, MerchantPayment>();
+            CreateMap<MerchantPayment, BankResponse>();
         }
     }
 }

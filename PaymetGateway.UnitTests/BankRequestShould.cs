@@ -1,10 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using NUnit.Framework;
 
 namespace PaymentGateway.UnitTests
 {
-    class BankRequestShould
+    [TestFixture]
+    public class BankRequestShould
     {
+        [SetUp]
+        public void SetUp()
+        {
+
+        }
+
+        [Test]
+        public void AddAuthenticationHeader()
+        {
+
+        }
+
     }
 }

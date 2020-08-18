@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Text;
 using Newtonsoft.Json;
 using PaymentGateway.Libs.Models;
 using RabbitMQ.Client;
@@ -9,8 +7,8 @@ namespace PaymentGateway.Libs.Services
 {
     public class PaymentPublisher :IPaymentPublisher
     {
-        private IModel _channel;
-        private IConnection _connection;
+        private readonly IModel _channel;
+        private readonly IConnection _connection;
 
         public PaymentPublisher()
         {

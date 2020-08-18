@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Text;
-using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace PaymentGateway.Libs.Models
 {
@@ -16,40 +12,8 @@ namespace PaymentGateway.Libs.Models
         public PaymentMethod PaymentMethod { get; set; }
         public string MerchantId { get; set; }
         public Status Status { get; set; }
+        public DateTime TransactionDate => DateTime.UtcNow;
 
-    }
-    public class MerchantPaymentRequest
-    {
-        public double Amount { get; set; }
-        public string Currency { get; set; }
-        public PaymentMethod PaymentMethod { get; set; }
-        public string MerchantId { get; set; }
-
-    }
-
-    public class MerchantPaymentResponse
-    {
-        public Guid Id { get; set; }
-        public double Amount { get; set; }
-        public string Currency { get; set; }
-        public string Type { get; set; }
-        public string Number { get; set; }
-        public string ExpirationMonth { get; set; }
-        public string ExpirationYear { get; set; }
-        public string Cvv { get; set; }
-        public string MerchantId { get; set; }
-        public Status Status { get; set; }
-
-    }
-
-    public class PaymentMethod
-    {
-        public Guid PaymentMethodId { get; set; }
-        public string Type { get; set; }
-        public string Number { get; set; }
-        public string ExpirationMonth { get; set; }
-        public string ExpirationYear { get; set; }
-        public string Cvv { get; set; }
     }
     
 }
