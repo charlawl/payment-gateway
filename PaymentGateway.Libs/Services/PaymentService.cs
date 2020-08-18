@@ -18,8 +18,5 @@ namespace PaymentGateway.Libs.Services
         }
     }
 
-    public interface IPaymentService
-    {
-        Task<BankResponse> SubmitPaymentToBank(MerchantPayment payment);
-    }
+
 }

@@ -39,8 +39,5 @@ namespace PaymentGateway.Libs.Services
 
     }
 
-    public interface IPaymentPublisher
-    {
-        void PublishPaymentSubmitted(MerchantPayment payment);
-    }
+
 }

@@ -30,8 +30,5 @@ namespace PaymentGateway.Libs.Services
     }
 
 
-    public interface IInitiatePayment
-    {
-        Task<BankResponse> InitiatePaymentWithCardDetails(MerchantPayment payment);
-    }
+
 }
